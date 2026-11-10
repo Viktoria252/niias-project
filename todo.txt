@@ -1,0 +1,18 @@
+Убедитесь, что вы находитесь в папке niias-project на вашей VM.
+Запустите сборку и старт контейнеров:
+
+bash
+docker compose up -d --build
+Скачайте модель для эмбеддингов (BGE-M3) в Ollama. Без неё RAG не сможет искать по базе:
+
+bash
+docker exec -it niias-ollama ollama pull bge-m3
+(Убедитесь, что модель qwen2.5:3b тоже скачана).
+Проверьте работу API. Выполните в терминале VM:
+
+bash
+curl -X POST http://localhost:8000/api/ask \
+  -H "Content-Type: application/json" \
+  -d '{"query": "Что делать при неисправности тормозов?"}'
+
+

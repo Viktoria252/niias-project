@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+
+# Node / Vue
+node_modules/
+dist/
+dist-ssr/
+*.local
+.vite/
+
+# Mac OS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Docker (если появятся локальные тома данных)
+data/
+*.log
