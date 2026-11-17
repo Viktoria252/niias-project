@@ -18,7 +18,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: niias-backend
-    # Убрали volume lancedb_data
+    volumes:
+      - db_data:/app/data
     environment:
       - OLLAMA_HOST=http://ollama:11434
     depends_on:
@@ -57,3 +58,4 @@ networks:
 
 volumes:
   ollama_models:
+  db_data:
