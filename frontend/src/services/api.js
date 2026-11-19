@@ -26,7 +26,7 @@ export const api = {
     });
     if (!response.ok) throw new Error('Ошибка удаления');
     return await response.json();
-  }
+  }, // <--- ВОТ ОНА, ЗАПЯТАЯ!
 
   // Получить одну заявку
   async getApplicationById(id) {
