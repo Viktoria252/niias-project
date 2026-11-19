@@ -36,12 +36,8 @@
       </div>
 
       <div class="actions">
-        <button type="button" class="btn btn-secondary" @click="goHome">
-          На главную
-        </button>
-        <button type="submit" class="btn btn-primary">
-          Сохранить
-        </button>
+        <button type="button" class="btn btn-secondary" @click="goHome">На главную</button>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
       </div>
     </form>
   </div>
