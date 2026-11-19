@@ -71,7 +71,7 @@ def delete_application(app_id: int, db: Session = Depends(get_db)):
     return {"message": "Удалено"}
 
 
-# --- Новые маршруты для работы с конкретной заявкой ---
+# Новые маршруты для работы с конкретной заявкой
 
 @app.get("/api/applications/{app_id}", response_model=ApplicationResponse)
 def get_application(app_id: int, db: Session = Depends(get_db)):
@@ -95,8 +95,8 @@ def update_application(app_id: int, app_data: ApplicationCreate, db: Session = D
     db.refresh(db_app)
     return db_app
 
-# --- Имитация анализа документа (ИИ) ---
-@app.post("/api/analyze/{app_id}")
+# Имитация анализа документа (ИИ)
+@app.post("/api/verify/{app_id}")
 def analyze_document(app_id: int, db: Session = Depends(get_db)):
     # В реальности здесь будет загрузка файла, OCR и вызов Ollama/RAG
     # Сейчас мы просто имитируем, что ИИ нашел расхождения
@@ -104,12 +104,10 @@ def analyze_document(app_id: int, db: Session = Depends(get_db)):
     if not db_app:
         raise HTTPException(status_code=404, detail="Заявка не найдена")
 
-    # Имитируем ответ от ИИ (в будущем здесь будет реальный вызов)
-    # Допустим, ИИ "прочитал" документ и предложил свои варианты полей
+    # Имитируем ответ от ИИ
     ai_results = {
         "loco_number": db_app.loco_number,  # Совпадает
         "failure_type": "Отказ датчика" if db_app.failure_type == "Сбой ПО" else db_app.failure_type,
-        # Искусственно меняем для демонстрации
         "description": db_app.description  # Совпадает
     }
 
@@ -121,22 +119,3 @@ OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://ollama:11434")
 class QueryRequest(BaseModel):
     query: str
     limit: int = 3
-
-@app.post("/api/ask")
-async def ask_question(request: QueryRequest):
-    stub_context = "ИНСТРУКЦИЯ (ЗАГЛУШКА): При неисправности тормозов машинист обязан немедленно остановить поезд, зафиксировать инцидент в бумажном бланке и сообщить в диспетчерскую службу."
-    stub_sources = ["Тестовый документ 1 (Заглушка)", "Тестовый документ 2 (Заглушка)"]
-
-    prompt = f"Ты — ассистент диспетчера РЖД. Используй контекст:\n{stub_context}\n\nВопрос: {request.query}\nОтвет:"
-
-    async with httpx.AsyncClient() as client:
-        response = await client.post(
-            f"{OLLAMA_HOST}/api/generate",
-            json={"model": "qwen2.5:3b", "prompt": prompt, "stream": False, "options": {"temperature": 0.3}},
-            timeout=120.0
-        )
-        if response.status_code != 200:
-            raise HTTPException(status_code=500, detail="Ошибка генерации")
-        answer = response.json()["response"]
-
-    return {"answer": answer, "sources": stub_sources}
