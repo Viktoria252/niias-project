@@ -96,7 +96,7 @@ def update_application(app_id: int, app_data: ApplicationCreate, db: Session = D
     return db_app
 
 # Имитация анализа документа (ИИ)
-@app.post("/api/verify/{app_id}")
+@app.post("/api/analyze/{app_id}")
 def analyze_document(app_id: int, db: Session = Depends(get_db)):
     # В реальности здесь будет загрузка файла, OCR и вызов Ollama/RAG
     # Сейчас мы просто имитируем, что ИИ нашел расхождения
