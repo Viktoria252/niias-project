@@ -24,7 +24,7 @@
     <div v-if="showResults" class="results-panel">
       <div class="status-info">
         <span v-if="hasErrors" class="text-error">ёОбнаружены расхождения</span>
-        <span v-else class="text-success">ёВсе данные совпадают</span>
+        <span v-else class="text-success">Все данные совпадают</span>
       </div>
       <button v-if="hasErrors" class="btn btn-warning" @click="replaceAll">
         Заменить все значения
